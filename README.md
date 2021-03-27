@@ -1,5 +1,5 @@
 # polishNewsTitleDatabase
-Polish news database for analysis and ML purposes. Collected mostly from Google News aggregator. 
+Polish [news database](https://github.com/avrland/polishNewsTitleDatabase/blob/main/titles.txt) for analysis and ML purposes. Collected mostly from Google News aggregator. 
 
 Tags I used to collect newses:
 ```python
