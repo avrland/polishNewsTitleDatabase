@@ -24,6 +24,7 @@ class NewsScrapper:
   def __init__(self):
     self.logger = create_logger("news_scrapper")
     self.logger.info(f"===== NewsScrapper started =====")
+    self.job()
 
   def saveToFile(self, inputArray, outputFileName):
     file_object = open(outputFileName, 'a', encoding="utf-8")
@@ -42,7 +43,7 @@ class NewsScrapper:
                 lines_seen.add(each_line)
             else:
                 x = x+1
-    print("Duplicates removed: " + str(x))
+    self.logger.info(f"Duplicates removed: {x}")
 
   def lineCounter(self, fileName):
     file = open(fileName, "r")
@@ -50,7 +51,7 @@ class NewsScrapper:
     for line in file:
         if line != "\n":
             line_count += 1
-    return str(line_count)
+    self.logger.info(f"Amount of lines in file: {line_count}")
 
   def print_header(self, fileName):
       with open(fileName) as fn:  
@@ -66,11 +67,17 @@ class NewsScrapper:
         url = 'https://raw.githubusercontent.com/avrland/polishNewsTitleDatabase/main/titles.txt'
         wget.download(url, self.rawFileName)
 
+  def backupDB(self):
+      currentTime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+      # Move a file from the directory d1 to d2
+      shutil.copy('/home/ubuntu/titles.txt', '/home/ubuntu/backup/titles_' + currentTime + ".txt")
+      self.logger.info(f"Copied current file: {self.rawFileName} to: '/home/ubuntu/backup/titles_'{currentTime}.txt")
+
   def job(self):    
       #Download current database
       self.getDB()
       self.print_header(self.rawFileName)
-
+      self.lineCounter(self.rawFileName)
       x = 0
       for tag in self.newsTags:
         #print("Collecting newses from tag: " + tag + "...")
@@ -90,13 +97,8 @@ class NewsScrapper:
       #os.remove(rawFileName) #delete bufor file
       #logger.info(f"Removed file with duplicates:  {rawFileName}")
       os.rename(self.finalFileName, self.rawFileName) #rename final file to bufor name
-      print("Renamed:" + self.finalFileName + " to: " + self.rawFileName)
       self.logger.info(f"Renamed: {self.finalFileName} to: {self.rawFileName}")
-      
-      currentTime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-      # Move a file from the directory d1 to d2
-      shutil.copy('/home/ubuntu/titles.txt', '/home/ubuntu/backup/titles_' + currentTime + ".txt")
-      self.logger.info(f"Copied current file: {self.rawFileName} to: '/home/ubuntu/backup/titles_'{currentTime}.txt")
+      self.backupDB()
 
 
 #schedule.every().day.at("05:50").do(job)
@@ -104,7 +106,6 @@ class NewsScrapper:
 
 async def main():
     ns = NewsScrapper()
-    ns.job()
     while True:
         await asyncio.sleep(600)
 
