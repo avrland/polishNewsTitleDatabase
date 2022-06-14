@@ -1,4 +1,4 @@
-from github import Github
+#from github import Github
 from GoogleNews import GoogleNews
 import pandas as pd
 import json
@@ -10,91 +10,108 @@ import wget
 import shutil
 import schedule
 import time
+from logger import create_logger
+from datetime import datetime
+import asyncio
 
-newsLang = 'pl' 
-rawFileName = "titles.txt" 
-finalFileName = "titlesWithoutDuplicates.txt"
-newsTags = [ "swiat", "koronawirus", "pis", "polska", "sport", "apple", "samsung", "technologia", "COVID-19", "amazon", "google", "gospodarka", "chiny", "rozrywka", "nauka"]
-        
-def saveToFile(inputArray, outputFileName):
-  file_object = open(outputFileName, 'a', encoding="utf-8")
-  for count in range(0, len(inputArray['title'])):
-      single_article = inputArray['title'][count]
-      file_object.write('\n' + single_article)
-  file_object.close()
+class NewsScrapper:
 
-def removeDuplicates(inFileName, outFileName):
-  x = 0
-  lines_seen = set() # holds lines already seen
-  with open(outFileName, "w", encoding="utf-8") as output_file:
-      for each_line in open(inFileName, "r", encoding="utf-8"):
-          if each_line not in lines_seen: # check if line is not duplicate
-              output_file.write(each_line)
-              lines_seen.add(each_line)
-          else:
-              x = x+1
-  print("Duplicates removed: " + str(x))
+  newsLang = 'pl' 
+  rawFileName = "titles.txt" 
+  finalFileName = "titlesWithoutDuplicates.txt"
+  newsTags = [ "swiat", "koronawirus", "pis", "polska", "sport", "apple", "samsung", "technologia", "COVID-19", "amazon", "wojna", "google", "gospodarka", "chiny", "rozrywka", "nauka"]
 
-def lineCounter():
-  file = open(rawFileName, "r")
-  line_count = 0
-  for line in file:
-      if line != "\n":
-          line_count += 1
-  return str(line_count)
+  def __init__(self):
+    self.logger = create_logger("news_scrapper")
+    self.logger.info(f"===== NewsScrapper started =====")
 
-def job():    
-    #Download current database
-    url = 'https://raw.githubusercontent.com/avrland/polishNewsTitleDatabase/main/titles.txt'
-    wget.download(url, 'titles.txt')
-    filename = 'titles.txt'  
-    with open(filename) as fn:  
-      ln = fn.readline()
-      lncnt = 0
-      while lncnt < 5:
-           print("Line {}: {}".format(lncnt, ln.strip()))
-           ln = fn.readline()
-           lncnt += 1   
-        #Fetching news section
+  def saveToFile(self, inputArray, outputFileName):
+    file_object = open(outputFileName, 'a', encoding="utf-8")
+    for count in range(0, len(inputArray['title'])):
+        single_article = inputArray['title'][count]
+        file_object.write('\n' + single_article)
+    file_object.close()
+
+  def removeDuplicates(self, inFileName, outFileName):
     x = 0
-    for tag in newsTags:
-      print("Collecting newses from tag: " + tag + "...")
-      googlenews = GoogleNews()
-      googlenews.clear()
-      googlenews.set_lang(newsLang)
-      googlenews.setperiod('1d')
-      googlenews.get_news(tag)
-      output = googlenews.results(sort=True)
-      output = pd.DataFrame(output)
-      x = x + len(output['title'])
-      saveToFile(output, rawFileName)
-    print("Collected amount of news: " + str(x))
-    removeDuplicates(rawFileName, finalFileName)
+    lines_seen = set() # holds lines already seen
+    with open(outFileName, "w", encoding="utf-8") as output_file:
+        for each_line in open(inFileName, "r", encoding="utf-8"):
+            if each_line not in lines_seen: # check if line is not duplicate
+                output_file.write(each_line)
+                lines_seen.add(each_line)
+            else:
+                x = x+1
+    print("Duplicates removed: " + str(x))
 
-    os.remove(rawFileName) #delete bufor file
-    print("Removed file with duplicates: " + rawFileName)
-    os.rename(finalFileName,rawFileName) #rename final file to bufor name
-    print("Renamed:" + finalFileName + " to: " + rawFileName)
+  def lineCounter(self, fileName):
+    file = open(fileName, "r")
+    line_count = 0
+    for line in file:
+        if line != "\n":
+            line_count += 1
+    return str(line_count)
 
-    #Github upload section
-    g = Github("INSERT TOKEN HERE")
-    repo = g.get_repo("avrland/polishNewsTitleDatabase")
-    currentFile = repo.get_contents("/titles.txt")
+  def print_header(self, fileName):
+      with open(fileName) as fn:  
+        ln = fn.readline()
+        lncnt = 0
+        while lncnt < 5:
+            print("Line {}: {}".format(lncnt, ln.strip()))
+            ln = fn.readline()
+            lncnt += 1  
 
-    newFile = open("titles.txt").read()
+  def getDB(self):
+      if not os.path.isfile(self.rawFileName):
+        url = 'https://raw.githubusercontent.com/avrland/polishNewsTitleDatabase/main/titles.txt'
+        wget.download(url, self.rawFileName)
 
-    # update
-    repo.update_file("titles.txt", "Titlebase update, current size: " + lineCounter() + " newses", newFile, currentFile.sha)
+  def job(self):    
+      #Download current database
+      self.getDB()
+      self.print_header(self.rawFileName)
 
-    #Pobierz dzisiejszą datę i godzinę
-    from datetime import datetime
-    currentTime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+      x = 0
+      for tag in self.newsTags:
+        #print("Collecting newses from tag: " + tag + "...")
+        self.logger.info(f"Collecting newses from tag: {tag}")
+        googlenews = GoogleNews()
+        googlenews.clear()
+        googlenews.set_lang(self.newsLang)
+        googlenews.setperiod('1d')
+        googlenews.get_news(tag)
+        output = googlenews.results(sort=True)
+        output = pd.DataFrame(output)
+        x = x + len(output['title'])
+        self.saveToFile(output, self.rawFileName)
+      self.logger.info(f"Collected amount of news:  {x}")
+      self.removeDuplicates(self.rawFileName, self.finalFileName)
 
-    # Move a file from the directory d1 to d2
-    shutil.move('/home/ubuntu/titles.txt', '/home/ubuntu/backup/titles_' + currentTime + ".txt")
-print("schedule.every().day.at(""09:50"").do(job)")
-schedule.every().day.at("09:50").do(job)
+      #os.remove(rawFileName) #delete bufor file
+      #logger.info(f"Removed file with duplicates:  {rawFileName}")
+      os.rename(self.finalFileName, self.rawFileName) #rename final file to bufor name
+      print("Renamed:" + self.finalFileName + " to: " + self.rawFileName)
+      self.logger.info(f"Renamed: {self.finalFileName} to: {self.rawFileName}")
+      
+      currentTime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+      # Move a file from the directory d1 to d2
+      shutil.copy('/home/ubuntu/titles.txt', '/home/ubuntu/backup/titles_' + currentTime + ".txt")
+      self.logger.info(f"Copied current file: {self.rawFileName} to: '/home/ubuntu/backup/titles_'{currentTime}.txt")
+
+
+#schedule.every().day.at("05:50").do(job)
 #schedule.every(10).minutes.do(job)
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+
+async def main():
+    ns = NewsScrapper()
+    ns.job()
+    while True:
+        await asyncio.sleep(600)
+
+
+def start_scrapper():
+    asyncio.run(main())
+
+
+if __name__ == "__main__":
+    start_scrapper()
