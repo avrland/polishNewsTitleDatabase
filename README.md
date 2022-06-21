@@ -1,5 +1,7 @@
 # polishNewsTitleDatabase
-Polish [news database](https://github.com/avrland/polishNewsTitleDatabase/blob/main/titles.txt) for analysis and ML purposes. Collected mostly from Google News aggregator. 
+Polish [news titles database](https://github.com/avrland/polishNewsTitleDatabase/blob/main/titles.txt) for analysis and ML purposes. 
+* Collected mostly from Google News aggregator using [GoogleNews Python](https://pypi.org/project/GoogleNews/) library
+* No duplicates
 ```
 Line 1: Polka straciła 36 tys. zł: napastnik wykiwał zarówno ją, jak i bank
 Line 2: Chrome 86 na Androida pozwoli zaplanować pobieranie. Można już testować
@@ -15,4 +17,3 @@ Tags I used to collect newses:
 ```
 * Feel free to try how does it works in [Google Colab](https://colab.research.google.com/github/avrland/polishNewsTitleDatabase/blob/main/GoogleNews_scrapper_to_textfile.ipynb). It containts fully explaination how does it works. 
 * [scrapper+scheduler.py](https://github.com/avrland/polishNewsTitleDatabase/blob/main/scrapper%2Bscheduler.py) took Jupyter Notebook to simple python script which you can run at your machine to collect newses everyday automatically. It makes backup on your machine but also sends updated database to github repo.
-
