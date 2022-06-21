@@ -13,6 +13,7 @@ import time
 from logger import create_logger
 from datetime import datetime
 import asyncio
+import dropbox_uploader
 
 class NewsScrapper:
 
@@ -25,8 +26,11 @@ class NewsScrapper:
     self.logger = create_logger("news_scrapper")
     self.logger.info(f"===== NewsScrapper started =====")
     schedule.every().day.at("05:50").do(self.job)
-    self.logger.info(f"Scheduler set at 05:50 (7:50 CEST)")
-    #self.job()
+    self.logger.info(f"Scheduler of scrapper set at 05:50 (7:50 CEST)")
+
+    self.db_backuper = dropbox_uploader.backuper()
+    self.logger.info(f"Scheduler of backuper at 06:00 (8:00 CEST)")
+    schedule.every().day.at("06:00").do(self.db_backuper.backup)
 
   def saveToFile(self, inputArray, outputFileName):
     file_object = open(outputFileName, 'a', encoding="utf-8")
@@ -107,7 +111,7 @@ async def main():
     ns = NewsScrapper()
     while True:
         schedule.run_pending()
-        await asyncio.sleep(1)
+        await asyncio.sleep(10)
 
 
 def start_scrapper():
