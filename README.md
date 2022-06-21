@@ -1,5 +1,6 @@
 # polishNewsTitleDatabase
 Polish [news titles database](https://github.com/avrland/polishNewsTitleDatabase/blob/main/titles.txt) for analysis and ML purposes. 
+* **titles.txt** - titles database line by line in raw .txt
 * Collected mostly from Google News aggregator using [GoogleNews Python](https://pypi.org/project/GoogleNews/) library
 * No duplicates
 ```
