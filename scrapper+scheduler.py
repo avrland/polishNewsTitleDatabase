@@ -24,7 +24,9 @@ class NewsScrapper:
   def __init__(self):
     self.logger = create_logger("news_scrapper")
     self.logger.info(f"===== NewsScrapper started =====")
-    self.job()
+    schedule.every().day.at("05:50").do(self.job)
+    self.logger.info(f"Scheduler set at 05:50 (7:50 CEST)")
+    #self.job()
 
   def saveToFile(self, inputArray, outputFileName):
     file_object = open(outputFileName, 'a', encoding="utf-8")
@@ -73,7 +75,8 @@ class NewsScrapper:
       shutil.copy('/home/ubuntu/titles.txt', '/home/ubuntu/backup/titles_' + currentTime + ".txt")
       self.logger.info(f"Copied current file: {self.rawFileName} to: '/home/ubuntu/backup/titles_'{currentTime}.txt")
 
-  def job(self):    
+  def job(self):
+      print("Job started...")    
       #Download current database
       self.getDB()
       self.print_header(self.rawFileName)
@@ -100,14 +103,11 @@ class NewsScrapper:
       self.logger.info(f"Renamed: {self.finalFileName} to: {self.rawFileName}")
       self.backupDB()
 
-
-#schedule.every().day.at("05:50").do(job)
-#schedule.every(10).minutes.do(job)
-
 async def main():
     ns = NewsScrapper()
     while True:
-        await asyncio.sleep(600)
+        schedule.run_pending()
+        await asyncio.sleep(1)
 
 
 def start_scrapper():
