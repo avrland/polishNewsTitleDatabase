@@ -3,6 +3,7 @@ Polish [news titles database](https://github.com/avrland/polishNewsTitleDatabase
 * **titles.txt** - titles database line by line in raw .txt
 * Collected mostly from Google News aggregator using [GoogleNews Python](https://pypi.org/project/GoogleNews/) library
 * No duplicates
+* Optional backup uploading to Dropbox
 ```
 Line 1: Polka straciła 36 tys. zł: napastnik wykiwał zarówno ją, jak i bank
 Line 2: Chrome 86 na Androida pozwoli zaplanować pobieranie. Można już testować
