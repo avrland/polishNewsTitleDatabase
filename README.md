@@ -10,7 +10,7 @@ Line 2: Chrome 86 na Androida pozwoli zaplanować pobieranie. Można już testow
 Line 3: Poczta Polska i cyfrowa rewolucja. Identyfikacja RFID przyspieszy wysyłki
 Line 4: GOG GALAXY 2.0 łączy siły z Epic Games Store. Jest wreszcie oficjalna integracja
 ...
-Database size: over 80k
+Database size: over 100k
 ```
 
 Tags I used to collect newses:
