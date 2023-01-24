@@ -29,5 +29,5 @@ This is most used 30 words in database. I manually removed short words who bring
 ```python
  newsTags = [ "swiat", "koronawirus", "pis", "polska", "sport", "apple", "samsung", "technologia", "COVID-19", "amazon", "wojna", "google", "gospodarka", "chiny", "rozrywka", "nauka"]
 ```
-* Feel free to try how does it works in [Google Colab](https://colab.research.google.com/github/avrland/polishNewsTitleDatabase/blob/main/GoogleNews_scrapper_to_textfile.ipynb). It containts fully explaination how does it works.
-* You can also try 'some stats' section in [Google Colab](https://github.com/avrland/polishNewsTitleDatabase/blob/main/Stats_and_visualization.ipynb)
+* You can check how data was fetched in [Google Colab notepad](https://colab.research.google.com/github/avrland/polishNewsTitleDatabase/blob/main/GoogleNews_scrapper_to_textfile.ipynb).
+* You can also try working with stats in [Google Colab notepad](https://github.com/avrland/polishNewsTitleDatabase/blob/main/Stats_and_visualization.ipynb)
