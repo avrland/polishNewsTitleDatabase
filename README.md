@@ -27,6 +27,12 @@ Outliers (1315) removed via IQR method.
 
 Outliers (1691) removed via IQR method. 
 
+### Characters vs words
+![This is an image](https://github.com/avrland/polishNewsTitleDatabase/raw/main/docs/chars_words_with_outliers.png)
+![This is an image](https://github.com/avrland/polishNewsTitleDatabase/raw/main/docs/chars_words_without_outliers.png)
+
+Outliers removed via IQR method. 
+
 ### Wordcloud
 This is most used 30 words in database. I manually removed short words who brings no any meaning and context.
 <img src="https://github.com/avrland/polishNewsTitleDatabase/raw/main/docs/wordcloud.png" width=35% height=35%>
