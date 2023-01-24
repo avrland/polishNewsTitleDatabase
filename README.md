@@ -35,6 +35,7 @@ Outliers removed via IQR method.
 
 ### Wordcloud
 This is most used 30 words in database. I manually removed short words who brings no any meaning and context.
+
 <img src="https://github.com/avrland/polishNewsTitleDatabase/raw/main/docs/wordcloud.png" width=35% height=35%>
 
 ### Tags used to collect newses:
