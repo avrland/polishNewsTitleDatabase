@@ -10,7 +10,9 @@ Line 2: Chrome 86 na Androida pozwoli zaplanować pobieranie. Można już testow
 Line 3: Poczta Polska i cyfrowa rewolucja. Identyfikacja RFID przyspieszy wysyłki
 Line 4: GOG GALAXY 2.0 łączy siły z Epic Games Store. Jest wreszcie oficjalna integracja
 ...
-Database size: 114373
+File Size is: 8.677 MB
+Titles amount: 114952
+Amount of words totally: 1213788
 ```
 ## Some stats
 ### News lenght (characters) - boxplot charts
@@ -28,3 +30,4 @@ This is most used 30 words in database. I manually removed short words who bring
  newsTags = [ "swiat", "koronawirus", "pis", "polska", "sport", "apple", "samsung", "technologia", "COVID-19", "amazon", "wojna", "google", "gospodarka", "chiny", "rozrywka", "nauka"]
 ```
 * Feel free to try how does it works in [Google Colab](https://colab.research.google.com/github/avrland/polishNewsTitleDatabase/blob/main/GoogleNews_scrapper_to_textfile.ipynb). It containts fully explaination how does it works.
+* You can also try 'some stats' section in [Google Colab](https://github.com/avrland/polishNewsTitleDatabase/blob/main/Stats_and_visualization.ipynb)
