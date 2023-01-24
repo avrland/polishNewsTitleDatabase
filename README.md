@@ -21,6 +21,12 @@ Amount of words totally: 1213788
 
 Outliers (1315) removed via IQR method. 
 
+### News lenght (words) - boxplot charts
+![This is an image](https://github.com/avrland/polishNewsTitleDatabase/raw/main/docs/news_words_raw.png)
+![This is an image](https://github.com/avrland/polishNewsTitleDatabase/raw/main/docs/news_words_outliers.png)
+
+Outliers (1691) removed via IQR method. 
+
 ### Wordcloud
 This is most used 30 words in database. I manually removed short words who brings no any meaning and context.
 <img src="https://github.com/avrland/polishNewsTitleDatabase/raw/main/docs/wordcloud.png" width=35% height=35%>
