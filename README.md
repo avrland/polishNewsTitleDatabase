@@ -15,13 +15,13 @@ Titles amount: 114952
 Amount of words totally: 1213788
 ```
 ## Some stats
-### News lenght (characters) - boxplot charts
+### News title lenght (characters) - boxplot charts
 ![This is an image](https://github.com/avrland/polishNewsTitleDatabase/raw/main/docs/news_lenght_raw.png)
 ![This is an image](https://github.com/avrland/polishNewsTitleDatabase/raw/main/docs/news_lenght_witout_outliers.png)
 
 Outliers (1315) removed via IQR method. 
 
-### News lenght (words) - boxplot charts
+### News title lenght (words) - boxplot charts
 ![This is an image](https://github.com/avrland/polishNewsTitleDatabase/raw/main/docs/news_words_raw.png)
 ![This is an image](https://github.com/avrland/polishNewsTitleDatabase/raw/main/docs/news_words_outliers.png)
 
